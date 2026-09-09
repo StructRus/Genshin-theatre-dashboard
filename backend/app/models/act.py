@@ -1,7 +1,12 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy import ForeignKey, String, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
+
+if TYPE_CHECKING:
+    from app.models.character import Character
 
 
 class Act(Base):
@@ -19,3 +24,8 @@ class Act(Base):
 
     #composite uniqueness : multiple runs can have same act
     __table_args__ = (UniqueConstraint("run_id", "act_number"),)
+
+    characters: Mapped[list["Character"]] = relationship(
+        secondary="act_characters",
+        back_populates="acts"
+    )

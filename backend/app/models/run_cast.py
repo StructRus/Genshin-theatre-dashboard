@@ -1,7 +1,12 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
+
+if TYPE_CHECKING:
+    from app.models.character import Character
 
 
 class RunCast(Base):
@@ -13,4 +18,9 @@ class RunCast(Base):
         ForeignKey("runs.id"),
         unique=True,
         nullable=False,
+    )
+
+    characters: Mapped[list["Character"]] = relationship(
+        secondary="run_cast_members",
+        back_populates="run_casts",
     )
