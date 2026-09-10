@@ -22,7 +22,7 @@ class Character(Base):
     element: Mapped[str] = mapped_column(String(10), nullable=False)
     weapon_type: Mapped[str] = mapped_column(String(20), nullable=False)
     rarity: Mapped[int] = mapped_column(nullable=False)
-    portrait_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    side_icon_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
 
     acts: Mapped[list["Act"]] = relationship(
         secondary="act_characters",
