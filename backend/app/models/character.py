@@ -17,6 +17,7 @@ class Character(Base):
     __tablename__ = "characters"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    avatar_id: Mapped[int] = mapped_column(unique=True,nullable=False)
     
     name: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     element: Mapped[str] = mapped_column(String(10), nullable=False)
