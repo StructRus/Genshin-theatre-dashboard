@@ -1,7 +1,7 @@
 from datetime import date
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Date, String
+from sqlalchemy import Date, String, CheckConstraint
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -14,6 +14,13 @@ if TYPE_CHECKING:
 
 class TheatreSeason(Base):
     __tablename__ = "theatre_seasons"
+
+    __table_args__ = (
+        CheckConstraint(
+            "cardinality(allowed_elements) = 3",
+            name="ck_theatre_season_allowed_elements_count",
+        ),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
 
