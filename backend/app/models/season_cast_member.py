@@ -1,4 +1,4 @@
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database import Base
@@ -6,6 +6,14 @@ from app.database import Base
 
 class SeasonCastMember(Base):
     __tablename__ = "season_cast_members"
+
+    __table_args__ = (
+        UniqueConstraint(
+            "season_cast_id",
+            "character_id",
+            name="uq_season_cast_member_character",
+        ),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
 
