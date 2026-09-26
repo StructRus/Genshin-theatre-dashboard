@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -24,3 +24,22 @@ class Run(Base):
     fantasia_flowers_used: Mapped[int] = mapped_column(nullable=False,)
     total_characters_appeared: Mapped[int] = mapped_column(nullable=False,)
     stars_earned: Mapped[int] = mapped_column(nullable=False,)
+
+    __table_args__ = (
+        CheckConstraint(
+            "time_elapsed_seconds >= 0",
+            name="ck_run_time_elapsed_nonnegative",
+        ),
+        CheckConstraint(
+            "fantasia_flowers_used >= 0",
+            name="ck_run_fantasia_flowers_nonnegative",
+        ),
+        CheckConstraint(
+            "total_characters_appeared >= 0",
+            name="ck_run_total_characters_nonnegative",
+        ),
+        CheckConstraint(
+            "stars_earned >= 0",
+            name="ck_run_stars_nonnegative",
+        ),
+    )

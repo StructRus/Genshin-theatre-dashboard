@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database import Base
@@ -25,3 +25,11 @@ class AccoladeResult(Base):
     )
 
     value: Mapped[int | None] = mapped_column(nullable=True,)
+
+    __table_args__ = (
+        UniqueConstraint(
+            "run_id",
+            "accolade_id",
+            name="uq_accolade_result_run_accolade",
+        ),
+    )

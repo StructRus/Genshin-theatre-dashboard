@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, String, UniqueConstraint
+from sqlalchemy import ForeignKey, String, UniqueConstraint, CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -23,7 +23,17 @@ class Act(Base):
     type: Mapped[str] = mapped_column(String(30), nullable=False,)
 
     #composite uniqueness : multiple runs can have same act
-    __table_args__ = (UniqueConstraint("run_id", "act_number"),)
+    __table_args__ = (
+        UniqueConstraint(
+            "run_id",
+            "act_number",
+            name="uq_act_run_number",
+        ),
+        CheckConstraint(
+            "act_number >= 1",
+            name="ck_act_number_positive",
+        ),
+    )
 
     characters: Mapped[list["Character"]] = relationship(
         secondary="act_characters",
